@@ -2,16 +2,20 @@ import os
 import subprocess
 from colorama import Fore
 import time
+import sys
+import LocateScanTool
 import nmap
 
+systemInfo = sys.platform
+
 def print_banner():
-    print(Fore.LIGHTWHITE_EX + r"""
+    print(Fore.LIGHTWHITE_EX + rf"""
     __  ___                 __  ______            __
    /  |/  /___  ____  _____/ /_/_  __/___  ____  / /
   / /|_/ / __ \/ __ \/ ___/ __ \/ / / __ \/ __ \/ / 
  / /  / / /_/ / /_/ / /__/ / / / / / /_/ / /_/ / /  
 /_/  /_/\____/ .___/\___/_/ /_/_/  \____/\____/_/   
-            /_/                                                                                              
+            /_/            Hola soy un {Fore.LIGHTMAGENTA_EX + systemInfo + Fore.RESET}                                                                            
       """ + Fore.RESET)
 
 NOMBRE = "mopch"
@@ -23,16 +27,19 @@ def main_menu():
     reset = Fore.RESET
 
     print(f"""
- [{red}({purple}1{red}){reset}] Escanear Objetivo
- [{red}({purple}2{red}){reset}] Insertar Archivo /os
- [{red}({purple}3{red}){reset}] Obtener Datos del dispositivo
- [{red}({purple}4{red}){reset}] Opción
- [{red}({purple}5{red}){reset}] Opción 
- [{red}({purple}6{red}){reset}] Opción 
+ [{red}({purple}1{red}){reset}] Escanear Objetivo [Ip o Dominio]
+ [{red}({purple}2{red}){reset}] Esconder Archivo
+ [{red}({purple}3{red}){reset}] Ejecutar Script
+ [{red}({purple}4{red}){reset}] Reconocimiento
+ [{red}({purple}5{red}){reset}] Historial redes wifi [Solo Windows]
+ [{red}({purple}6{red}){reset}] Documentacion
+ [{red}({purple}0{red}){reset}] Salir
           """)
     resp_menu = input("[" + Fore.LIGHTMAGENTA_EX + "?" + Fore.RESET + "] #User > ")
     if resp_menu == "1":
-        print("Función de escaneo aún no implementada.")
+        print("[+] Introduce la IP o Dominio del objetivo:")
+        resp_menu = input("[" + Fore.LIGHTMAGENTA_EX + "?" + Fore.RESET + "] #User > ")
+        LocateScanTool.whoRU(resp_menu)
     # Agrega más opciones según sea necesario
 
 def check_user(nombre_inp, contrasenya_inp):
@@ -49,9 +56,10 @@ def check_user(nombre_inp, contrasenya_inp):
 
 def main():
     print_banner()
+   
     try:
-        nombre_inp = input(Fore.RED + "[+] Usuario:" + Fore.WHITE)
-        contrasenya_inp = input(Fore.RED + "[+] Pass:" + Fore.WHITE)
+        nombre_inp = input(Fore.LIGHTBLACK_EX + "[+] Usuario:" + Fore.WHITE)
+        contrasenya_inp = input(Fore.LIGHTBLACK_EX + "[+] Pass:" + Fore.WHITE)
         check_user(nombre_inp, contrasenya_inp)
     except Exception as e:
         print(f"Ocurrió un error: {e}")
