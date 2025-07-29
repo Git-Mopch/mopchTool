@@ -4,7 +4,7 @@ from colorama import Fore
 import time
 import sys
 import LocateScanTool
-import nmap
+
 
 systemInfo = sys.platform
 
@@ -18,8 +18,8 @@ def print_banner():
             /_/            Hola soy un {Fore.LIGHTMAGENTA_EX + systemInfo + Fore.RESET}                                                                            
       """ + Fore.RESET)
 
-NOMBRE = "mopch"
-PASSWD = "032003"
+NOMBRE = "root"
+PASSWD = "toor"
 
 def main_menu():
     red = Fore.LIGHTRED_EX
@@ -37,10 +37,9 @@ def main_menu():
           """)
     resp_menu = input("[" + Fore.LIGHTMAGENTA_EX + "?" + Fore.RESET + "] #User > ")
     if resp_menu == "1":
-        print("[+] Introduce la IP o Dominio del objetivo:")
+        print("[" + Fore.LIGHTYELLOW_EX+ "+" + Fore.RESET + "] Introduce la IP o Dominio del objetivo:")
         resp_menu = input("[" + Fore.LIGHTMAGENTA_EX + "?" + Fore.RESET + "] #User > ")
         LocateScanTool.whoRU(resp_menu)
-    # Agrega más opciones según sea necesario
 
 def check_user(nombre_inp, contrasenya_inp):
     time.sleep(1)
