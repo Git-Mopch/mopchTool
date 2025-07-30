@@ -39,8 +39,6 @@ class Loader:
 
 def whoRU(tarjet):
     sistema = platform.system()
-
-    # Ruta absoluta al ejecutable Nmap local
     ruta_local_nmap = os.path.join(os.getcwd(), "tools", "nmap.exe")
 
     if sistema == "Windows":
@@ -48,19 +46,24 @@ def whoRU(tarjet):
         if not os.path.isfile(ruta_nmap):
             print(f"[!] No se encontró 'nmap.exe' en: {ruta_nmap}")
             return []
+    elif sistema == "Linux":
+        nmap_path = subprocess.run(["which", "nmap"], capture_output=True, text=True)
+        ruta_nmap = nmap_path.stdout.strip()
+        if not ruta_nmap:
+            print("[!] Nmap no está instalado en el sistema. Instálalo con 'sudo apt install nmap'")
+            return []
     else:
-        print("[!] Este script está diseñado para funcionar en Windows con Nmap portable.")
+        print("[!] Este script está diseñado para funcionar en Windows o Linux con Nmap instalado.")
         return []
 
-    # Limpiar pantalla
     subprocess.run("cls" if sistema == "Windows" else "clear", shell=True)
     print(f"[?] Ejecutando escaneo a: {tarjet}")
 
-    loader = Loader("[!] Escaneando puertos...",Fore.LIGHTGREEN_EX +  "[+] Escaneo completado!" + Fore.RESET , 0.2).start()
+    loader = Loader("[!] Escaneando puertos...", Fore.LIGHTGREEN_EX + "[+] Escaneo completado!" + Fore.RESET, 0.2).start()
 
     try:
         resultado = subprocess.run(
-            [ruta_nmap, "-sS", "-T4", "-p", "1-1000", "-oX", "-", tarjet],
+            [ruta_nmap, "--unprivileged", "-sT", "-T4", "-p", "1-1000", "-oX", "-", tarjet],
             capture_output=True,
             text=True,
             check=True
@@ -76,13 +79,14 @@ def whoRU(tarjet):
         print("[!] Nmap no devolvió salida válida.")
         return []
 
-    escaner = nmap.PortScanner(nmap_search_path=[ruta_nmap])
+    nmap_search = [ruta_nmap] if sistema == "Windows" else None
+    escaner = nmap.PortScanner(nmap_search_path=nmap_search) if nmap_search else nmap.PortScanner()
     escaner.analyse_nmap_xml_scan(resultado.stdout)
 
     resultados = []
 
     for host in escaner.all_hosts():
-        print( f"\n [+] Resultados para { Fore.LIGHTRED_EX + host + Fore.RESET }")
+        print(f"\n [+] Resultados para {Fore.LIGHTRED_EX + host + Fore.RESET}")
         print("Estado del host:", escaner[host].state())
 
         for protocolo in escaner[host].all_protocols():
@@ -98,7 +102,4 @@ def whoRU(tarjet):
                     "producto": info.get("product", ""),
                     "version": info.get("version", "")
                 })
-                print(f" - Puerto {puerto}/{protocolo}: {info.get('name', '?')} ({info.get('state', '?')})")
-
-    return resultados
-
+                print(f" - Puerto {puerto}/{protocolo}: {info.get('name', '?')}")

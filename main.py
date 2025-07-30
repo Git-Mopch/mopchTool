@@ -28,7 +28,7 @@ def main_menu():
 
     print(f"""
  [{red}({purple}1{red}){reset}] Escanear Objetivo [Ip o Dominio]
- [{red}({purple}2{red}){reset}] Esconder Archivo
+ [{red}({purple}2{red}){reset}] Escanear web
  [{red}({purple}3{red}){reset}] Ejecutar Script
  [{red}({purple}4{red}){reset}] Reconocimiento
  [{red}({purple}5{red}){reset}] Historial redes wifi [Solo Windows]
@@ -40,6 +40,28 @@ def main_menu():
         print("[" + Fore.LIGHTYELLOW_EX+ "+" + Fore.RESET + "] Introduce la IP o Dominio del objetivo:")
         resp_menu = input("[" + Fore.LIGHTMAGENTA_EX + "?" + Fore.RESET + "] #User > ")
         LocateScanTool.whoRU(resp_menu)
+    elif resp_menu == "2":
+        print("[" + Fore.LIGHTYELLOW_EX + "+" + Fore.RESET + "] Esconder archivo (en desarrollo)")
+        time.sleep(1)
+    elif resp_menu == "3":
+        print("[" + Fore.LIGHTYELLOW_EX + "+" + Fore.RESET + "] Ejecutar script (en desarrollo)")
+        time.sleep(1)
+    elif resp_menu == "4":
+        print("[" + Fore.LIGHTYELLOW_EX + "+" + Fore.RESET + "] Reconocimiento (en desarrollo)")
+        time.sleep(1)
+    elif resp_menu == "5":      
+        if systemInfo == "win32":
+            print("[" + Fore.LIGHTYELLOW_EX + "+" + Fore.RESET + "] Historial redes wifi (en desarrollo)")
+            time.sleep(1)
+        else:
+            print("[" + Fore.LIGHTRED_EX + "!" + Fore.RESET + "] Esta opcion solo esta disponible en Windows")
+    elif resp_menu == "6":
+        print("[" + Fore.LIGHTYELLOW_EX + "+" + Fore.RESET + "] Documentacion (en desarrollo)")
+        time.sleep(1)
+    elif resp_menu == "0":
+        print("[" + Fore.LIGHTYELLOW_EX + "+" + Fore.RESET + "] Saliendo...")
+        time.sleep(1)
+        sys.exit()
 
 def check_user(nombre_inp, contrasenya_inp):
     time.sleep(1)
